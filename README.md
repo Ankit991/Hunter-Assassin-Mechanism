@@ -1,2 +1,3 @@
 # Hunter Assassin Mechanism
-    The project is for learning purpose
+i have tried to create a mechanism of hunter assassin which is a 2d Andriod game.
+    The project is for learning purpose only
