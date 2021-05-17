@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
-{   
+{
+    public Rigidbody EnemyRB;
     public Transform rayright,rayleft;
     public Transform player;
     private Animator E_anim;
@@ -19,26 +20,44 @@ public class Enemy : MonoBehaviour
     float nextfire;
     [SerializeField] float dis;
     public int DistanceToCapturePlayer;
-
+    private float enemyspeed;
+   
+ 
     //Another script reference;
     Playercontroller playercontroller;
+    EnemyDetectplayer enemyDetectplayer;
 
     // Start is called before the first frame update
     void Start()
     {
         playercontroller = GameObject.Find("Player").GetComponent<Playercontroller>();
+        enemyDetectplayer = GetComponentInChildren<EnemyDetectplayer>();
         E_anim = GetComponentInChildren<Animator>();
+       
         Enemy_agent = GetComponent<NavMeshAgent>();
-           // StartCoroutine(WalkTowardRamdompos());
-        InvokeRepeating("WalkRandomly", 1, 5);
+      
+        {
+            InvokeRepeating("WalkRandomly", Random.Range(1, 3), Random.Range(2.5f, 6f));
+        }
+       
+        EnemyRB = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        float DisBTWEnemy_An_killedenemy = Vector3.Distance(this.transform.position, playercontroller.enemydeathpos);
-        Debug.Log(DisBTWEnemy_An_killedenemy);
-        if (DisBTWEnemy_An_killedenemy < 50)
+        if (!playercontroller.isgamestart)
+        {
+            enemyspeed = Enemy_agent.speed;
+            Enemy_agent.speed = 0;
+        }
+        else
+        {
+            Enemy_agent.speed = 2;
+        }
+            float DisBTWEnemy_An_killedenemy = Vector3.Distance(this.transform.position, playercontroller.enemydeathpos);
+       
+        if (DisBTWEnemy_An_killedenemy < 10)
         {
             if (playercontroller.enemykilled)
             {
@@ -59,7 +78,7 @@ public class Enemy : MonoBehaviour
         if (dis > 1f)
         {
             E_anim.SetInteger("walk", 1);
-            Debug.Log(dis);
+         
         }
         else
         {
@@ -69,9 +88,10 @@ public class Enemy : MonoBehaviour
         Fire();
         CastRay();
     }
+   
     public void CastRay()
     {
-        RaycastHit hit;
+      
 
         if (Vector3.Distance(transform.position, player.position) > 10) //checking the position of player and eneymy ;
         {
@@ -79,19 +99,42 @@ public class Enemy : MonoBehaviour
             walkrandomly = true;
             fire = false;
         }
-        if (Physics.Raycast(rayright.position, rayright.transform.TransformDirection(Vector3.forward), out hit, DistanceToCapturePlayer,shoot)|| Physics.Raycast(rayleft.position, rayleft.transform.TransformDirection(Vector3.forward), out hit, DistanceToCapturePlayer,shoot)|| Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,DistanceToCapturePlayer,shoot))
-        {
-            Debug.DrawLine(transform.position, hit.point, Color.red);
-            Debug.DrawLine(rayright.position, hit.point, Color.green);
-            Debug.DrawLine(rayleft.position, hit.point, Color.blue);
-             fire = true;
-            followplayer = true;
-            walkrandomly = false;
-        }
-        else
-        {
-            fire = false;
-        }
+
+        #region casting rays
+        //if (Physics.Raycast(rayright.position, rayright.transform.TransformDirection(Vector3.forward), out hit, DistanceToCapturePlayer)|| Physics.Raycast(rayleft.position, rayleft.transform.TransformDirection(Vector3.forward), out hit, DistanceToCapturePlayer)|| Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,DistanceToCapturePlayer))
+        //{
+        //    //Debug.DrawLine(transform.position, hit.point, Color.red);
+        //Debug.DrawLine(rayright.position, hit.point, Color.green);
+        //Debug.DrawLine(rayleft.position, hit.point, Color.blue);
+        //if (!playercontroller.playerdied&&hit.collider.tag=="Player")
+        //{
+        //    fire = true;
+        //    Debug.Log(hit.collider.name);
+        //}
+        //else
+        //{
+        //    fire = false;
+        //}
+        #endregion
+        followplayer = enemyDetectplayer.isfollow;
+            walkrandomly = enemyDetectplayer.iswalk;
+              if (/*Vector3.Distance(transform.position, player.position) < 1*/enemyDetectplayer.isPlyaerfound) //if enemy is to close to the player then stop and fire 
+                {
+                    transform.rotation = Quaternion.LookRotation(player.position - transform.position, Vector3.up);
+
+                    Enemy_agent.isStopped = true;
+                    E_anim.SetInteger("walk", 0);
+                }
+                else if(!enemyDetectplayer.isPlyaerfound)
+                {
+                    Enemy_agent.isStopped = false;
+
+                    E_anim.SetInteger("walk", 1);
+                }
+           
+           
+      
+       
         if (followplayer)
         {
             Enemy_agent.SetDestination(player.position);
@@ -104,6 +147,7 @@ public class Enemy : MonoBehaviour
             float x = Random.Range(-14f, 14f);
             float z = Random.Range(-14f, 14f);
             walkingposition = new Vector3(x, transform.position.y, z);
+           
         }
        
     }
@@ -115,21 +159,21 @@ public class Enemy : MonoBehaviour
             float x = Random.Range(-14f, 14f);
             float z = Random.Range(-14f, 14f);
             walkingposition = new Vector3(x, transform.position.y, z);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(2f);
         }
        
     }
    public void Fire()
     {
-        if (fire)
-        {
-            if (Time.time > nextfire)
-            {
-                nextfire = firerate + Time.time;
-                 Instantiate(bullet, firepos.position, firepos.rotation);
+        //if (fire)
+        //{
+        //    if (Time.time > nextfire)
+        //    {
+        //        nextfire = firerate + Time.time;
+        //         Instantiate(bullet, firepos.position, firepos.rotation);
                
-            }
+        //    }
           
-        }
+        //}
     }
 }

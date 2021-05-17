@@ -39,8 +39,8 @@ public class Notificationmanager : MonoBehaviour
     {
         
     }
-    public void Restart()
-    {
-        SceneManager.LoadScene(0);
-    }
+    //public void Restart()
+    //{
+    //    SceneManager.LoadScene(0);
+    //}
 }

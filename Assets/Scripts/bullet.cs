@@ -13,14 +13,20 @@ public class bullet : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         transform.Translate(Vector3.forward *  bulletspeed);
     }
     private void OnTriggerEnter(Collider other)
     {
         Destroy(this.gameObject);
-       
     }
-
+    private void OnTriggerStay(Collider other)
+    {
+        Destroy(this.gameObject);
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        Destroy(this.gameObject);
+    }
 }
