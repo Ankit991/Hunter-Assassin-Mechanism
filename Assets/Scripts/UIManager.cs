@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-
+    #region monobehaviour callback
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
         GameoverUI();
         Win();
     }
+    #endregion
     #region private method
     private void GameoverUI()
     {

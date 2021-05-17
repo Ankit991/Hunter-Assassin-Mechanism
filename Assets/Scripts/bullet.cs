@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
+    #region public field
     public float bulletspeed;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #endregion
+
+    #region monobehaviour callback
 
     // Update is called once per frame
     void FixedUpdate()
@@ -29,4 +27,5 @@ public class bullet : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
+    #endregion
 }

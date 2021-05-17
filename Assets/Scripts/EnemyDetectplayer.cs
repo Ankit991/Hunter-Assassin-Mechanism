@@ -20,6 +20,7 @@ public class EnemyDetectplayer : MonoBehaviour
     UIManager uimanager;
     #endregion
 
+    #region monobehaviour callback
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +59,9 @@ public class EnemyDetectplayer : MonoBehaviour
             iswalk = true ;
         }
     }
+    #endregion
+
+    #region public method
     public void fireAbuttlet()
     {
         RaycastHit hit;
@@ -92,4 +96,5 @@ public class EnemyDetectplayer : MonoBehaviour
         }
 
     }
+    #endregion
 }

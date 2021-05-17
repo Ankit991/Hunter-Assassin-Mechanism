@@ -4,29 +4,39 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
+    #region public field
     public Rigidbody EnemyRB;
-    public Transform rayright,rayleft;
+    public Transform rayright, rayleft;
     public Transform player;
-    private Animator E_anim;
-   [SerializeField]  private Vector3 walkingposition;
-    private NavMeshAgent Enemy_agent;
-    public bool fire;
-    public bool followplayer;
-    public bool walkrandomly;
     public Transform bullet;
     public Transform firepos;
     public LayerMask shoot;
+    // int ,float ,bool ,vector etc
+    public bool fire;
+    public bool followplayer;
+    public bool walkrandomly;
     public float firerate;
+    public int DistanceToCapturePlayer;
+    #endregion
+
+
+    #region private field
+    private Animator E_anim;
+    private NavMeshAgent Enemy_agent;
+
+    //int ,float ,bool ,vector etc
     float nextfire;
     [SerializeField] float dis;
-    public int DistanceToCapturePlayer;
     private float enemyspeed;
-   
- 
+    [SerializeField] private Vector3 walkingposition;
+    #endregion
+
     //Another script reference;
     Playercontroller playercontroller;
     EnemyDetectplayer enemyDetectplayer;
 
+
+    #region monobehaviour callback
     // Start is called before the first frame update
     void Start()
     {
@@ -88,10 +98,13 @@ public class Enemy : MonoBehaviour
         Fire();
         CastRay();
     }
-   
+    #endregion
+
+
+    #region public method
     public void CastRay()
     {
-      
+
 
         if (Vector3.Distance(transform.position, player.position) > 10) //checking the position of player and eneymy ;
         {
@@ -117,53 +130,30 @@ public class Enemy : MonoBehaviour
         //}
         #endregion
         followplayer = enemyDetectplayer.isfollow;
-            walkrandomly = enemyDetectplayer.iswalk;
-              if (/*Vector3.Distance(transform.position, player.position) < 1*/enemyDetectplayer.isPlyaerfound) //if enemy is to close to the player then stop and fire 
-                {
-                    transform.rotation = Quaternion.LookRotation(player.position - transform.position, Vector3.up);
+        walkrandomly = enemyDetectplayer.iswalk;
+        if (/*Vector3.Distance(transform.position, player.position) < 1*/enemyDetectplayer.isPlyaerfound) //if enemy is to close to the player then stop and fire 
+        {
+            transform.rotation = Quaternion.LookRotation(player.position - transform.position, Vector3.up);
 
-                    Enemy_agent.isStopped = true;
-                    E_anim.SetInteger("walk", 0);
-                }
-                else if(!enemyDetectplayer.isPlyaerfound)
-                {
-                    Enemy_agent.isStopped = false;
+            Enemy_agent.isStopped = true;
+            E_anim.SetInteger("walk", 0);
+        }
+        else if (!enemyDetectplayer.isPlyaerfound)
+        {
+            Enemy_agent.isStopped = false;
 
-                    E_anim.SetInteger("walk", 1);
-                }
-           
-           
-      
-       
+            E_anim.SetInteger("walk", 1);
+        }
+
+
+
+
         if (followplayer)
         {
             Enemy_agent.SetDestination(player.position);
         }
     }
-    void WalkRandomly()
-    {
-        if (walkrandomly)
-        {
-            float x = Random.Range(-14f, 14f);
-            float z = Random.Range(-14f, 14f);
-            walkingposition = new Vector3(x, transform.position.y, z);
-           
-        }
-       
-    }
-   IEnumerator WalkTowardRamdompos()
-    {
-      
-        while (walkrandomly)
-        {
-            float x = Random.Range(-14f, 14f);
-            float z = Random.Range(-14f, 14f);
-            walkingposition = new Vector3(x, transform.position.y, z);
-            yield return new WaitForSeconds(2f);
-        }
-       
-    }
-   public void Fire()
+    public void Fire()
     {
         //if (fire)
         //{
@@ -171,9 +161,36 @@ public class Enemy : MonoBehaviour
         //    {
         //        nextfire = firerate + Time.time;
         //         Instantiate(bullet, firepos.position, firepos.rotation);
-               
+
         //    }
-          
+
         //}
     }
+    #endregion
+    #region private method
+    void WalkRandomly()
+    {
+        if (walkrandomly)
+        {
+            float x = Random.Range(-14f, 14f);
+            float z = Random.Range(-14f, 14f);
+            walkingposition = new Vector3(x, transform.position.y, z);
+
+        }
+
+    }
+    IEnumerator WalkTowardRamdompos()
+    {
+
+        while (walkrandomly)
+        {
+            float x = Random.Range(-14f, 14f);
+            float z = Random.Range(-14f, 14f);
+            walkingposition = new Vector3(x, transform.position.y, z);
+            yield return new WaitForSeconds(2f);
+        }
+
+    }
+    #endregion
+
 }
