@@ -12525,11 +12525,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerHealth_point: 1
-  Gameoverui: {fileID: 2032675138}
+  Gameoverui: {fileID: 1137278923}
   killpoint: 0
   Coinpoint: 0
   Diamondpoint: 0
-  cam1: {fileID: 0}
+  cam1: {fileID: 2032675139}
+  isstartgame: 0
   PlayerHealth: {fileID: 1127939640}
   killText: {fileID: 1574295268}
   coinText: {fileID: 571604522}
@@ -14659,7 +14660,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 1
-    m_SensorSize: {x: 0.5625, y: 1}
+    m_SensorSize: {x: 0.56216216, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -22445,7 +22446,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 1
-    m_SensorSize: {x: 0.5625, y: 1}
+    m_SensorSize: {x: 0.56216216, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -25540,19 +25541,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 721760dcbc2910044b2c32b7cdf9e5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemydeathpos: {x: 0, y: 0, z: 0}
-  enemypos: {x: 0, y: 0, z: 0}
   enemy:
   - {fileID: 335971718}
   - {fileID: 1247663639}
   - {fileID: 1230202878}
   - {fileID: 683154811}
   - {fileID: 1554001441}
+  pathinline: {fileID: 4073175833469285385}
+  lifepoint: 10
   hitenemy: 0
   enemykilled: 0
   playerdied: 0
-  lifepoint: 10
-  pathinline: {fileID: 4073175833469285385}
+  isgamestart: 0
+  enemydeathpos: {x: 0, y: 0, z: 0}
+  enemypos: {x: 0, y: 0, z: 0}
 --- !u!1 &4073215369732156548
 GameObject:
   m_ObjectHideFlags: 0
